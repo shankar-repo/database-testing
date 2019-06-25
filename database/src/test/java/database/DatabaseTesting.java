@@ -17,22 +17,15 @@ public class DatabaseTesting {
 		
 		try (Connection con = DriverManager.getConnection(url, user, password);
 				Statement st = con.createStatement();
-				ResultSet rs = st.executeQuery(
-						"select cus.company_name as \"Company Name\",count(cus.company_name) as \"Num of customers\"  from customers cus\r\n"
-								+ "inner join orders odr on cus.customer_id = odr.customer_id \r\n"
-								+ "group by cus.company_name \r\n"
-								+ "having count(cus.company_name) between 10 and 20 \r\n"
-								+ "order by count(cus.company_name) desc;")) {
+				ResultSet rs = st.executeQuery("SELECT * FROM CUSTOMERS")) {
 			//loop thru data
 			int rowsProcessed = 0;
 			while (rs.next()) {
 				rowsProcessed++;
+				System.out.println("Row number - " + rowsProcessed);
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-					if (rowsProcessed == 1) {
-						System.out.print(rs.getMetaData().getColumnName(i) + "                     |");
-					} else {
-						System.out.print(rs.getString(i) + "                |");
-					}
+					System.out.print(rs.getMetaData().getColumnName(i) + "                     |");
+					System.out.print(rs.getString(i));
 				}
 				System.out.println();
 			}
